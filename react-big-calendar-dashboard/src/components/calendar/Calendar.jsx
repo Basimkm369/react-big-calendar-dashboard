@@ -1,21 +1,27 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import CalendarView from './common/CalendarView';
 import DateEventsModal from './common/DateEventsModal';
-import { dummyData } from '../../utils/dummyData';
+import {
+  setSelectedDate,
+  openModal,
+  closeModal,
+} from '../../redux/calendarSlice';
+
 import '../../styles/calendar.css';
 
 const Calendar = () => {
-  const [eventsByDate] = useState(dummyData);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const dispatch = useDispatch();
+  const [currentView, setCurrentView] = useState('month');
+  const [currentDate, setCurrentDate] = useState(new Date());
+
+  const eventsByDate = useSelector((state) => state.calendar.eventsByDate);
+  const selectedDate = useSelector((state) => state.calendar.selectedDate);
+  const isModalOpen = useSelector((state) => state.calendar.isModalOpen);
 
   const handleDateSelect = (date) => {
-    setSelectedDate(date);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
+    dispatch(setSelectedDate(date));
+    dispatch(openModal());
   };
 
   return (
@@ -31,6 +37,10 @@ const Calendar = () => {
           eventsByDate={eventsByDate}
           selectedDate={selectedDate}
           onDateSelect={handleDateSelect}
+          currentView={currentView}
+          currentDate={currentDate}
+          onViewChange={setCurrentView}
+          onNavigate={setCurrentDate}
         />
       </div>
 
@@ -38,7 +48,7 @@ const Calendar = () => {
         isOpen={isModalOpen}
         selectedDate={selectedDate}
         eventsByDate={eventsByDate}
-        onClose={handleCloseModal}
+        onClose={() => dispatch(closeModal())}
       />
     </div>
   );

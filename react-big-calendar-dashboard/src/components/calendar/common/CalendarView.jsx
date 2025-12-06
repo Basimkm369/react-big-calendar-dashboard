@@ -19,7 +19,7 @@ const locales = {
 const localizer = dateFnsLocalizer({
   format,
   parse,
-  startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 1 }),
+  startOfWeek: (date) => startOfWeek(date, { weekStartsOn: 1 }),
   getDay,
   locales,
 });
@@ -39,7 +39,15 @@ const getDateTotal = (items) =>
     return sum + Number(firstValue || 0);
   }, 0);
 
-const CalendarView = ({ eventsByDate, selectedDate, onDateSelect }) => {
+const CalendarView = ({
+  eventsByDate,
+  selectedDate,
+  onDateSelect,
+  currentView,
+  currentDate,
+  onViewChange,
+  onNavigate,
+}) => {
   const normalizedSelectedDate = selectedDate ? startOfDay(selectedDate) : null;
 
   const events = useMemo(() => {
@@ -88,6 +96,10 @@ const CalendarView = ({ eventsByDate, selectedDate, onDateSelect }) => {
         events={events}
         startAccessor="start"
         endAccessor="end"
+        view={currentView}
+        onView={onViewChange}
+        date={currentDate}
+        onNavigate={onNavigate}
         selectable
         onSelectSlot={handleSelectSlot}
         onSelectEvent={handleSelectEvent}

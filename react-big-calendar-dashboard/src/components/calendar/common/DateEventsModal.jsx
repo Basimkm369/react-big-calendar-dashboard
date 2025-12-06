@@ -6,19 +6,14 @@ const DateEventsModal = ({ isOpen, selectedDate, eventsByDate, onClose }) => {
 
   const dateKey = format(selectedDate, 'dd-MM-yyyy');
   const dataForDate = eventsByDate?.[dateKey];
-  const hasData = !!dataForDate && dataForDate?.length > 0;
-  const entryCount = dataForDate?.length ?? 0;
+  const hasData = !!dataForDate?.length;
 
   return (
     <div className="modal-overlay">
       <div className="modal-content">
         <header className="modal-header">
           <h2>Data for {dateKey}</h2>
-          <button
-            className="modal-close-btn"
-            onClick={onClose}
-            aria-label="Close"
-          >
+          <button onClick={onClose} className="modal-close-btn">
             X
           </button>
         </header>
@@ -27,15 +22,14 @@ const DateEventsModal = ({ isOpen, selectedDate, eventsByDate, onClose }) => {
           {hasData ? (
             <>
               <p className="modal-info">
-                Showing {entryCount} sample metrics for{' '}
+                Showing {dataForDate.length} records for{' '}
                 <strong>{dateKey}</strong>.
               </p>
               <BarChart data={dataForDate} />
             </>
           ) : (
             <p className="modal-warning">
-              <strong>No data found for the selected date.</strong>{' '}
-              <span className="modal-warning-date">{dateKey}</span>
+              <strong>No data found for the selected date ({dateKey})</strong>
             </p>
           )}
         </div>
