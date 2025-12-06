@@ -1,1 +1,0 @@
-# React Big Calendar Dashboard
