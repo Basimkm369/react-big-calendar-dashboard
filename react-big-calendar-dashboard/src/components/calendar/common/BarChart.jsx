@@ -30,7 +30,7 @@ const normalizeChartData = (data) => {
 const BarChart = ({ data }) => {
   const chartData = useMemo(() => normalizeChartData(data), [data]);
 
-  if (!chartData.length) {
+  if (!chartData?.length) {
     return <p className="bar-chart-empty">No metrics to visualize.</p>;
   }
 

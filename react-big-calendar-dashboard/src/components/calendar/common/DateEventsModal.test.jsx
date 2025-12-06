@@ -40,7 +40,7 @@ describe('DateEventsModal', () => {
       <DateEventsModal {...baseProps} eventsByDate={eventsByDate} />
     );
 
-    expect(screen.getByText(/Showing 2 sample metrics/i)).toBeInTheDocument();
+    expect(screen.getByText(/We found 2 items for/i)).toBeInTheDocument();
     expect(screen.getByText(/Data for 01-11-2025/i)).toBeInTheDocument();
   });
 });

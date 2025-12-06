@@ -48,7 +48,10 @@ const Calendar = () => {
         isOpen={isModalOpen}
         selectedDate={selectedDate}
         eventsByDate={eventsByDate}
-        onClose={() => dispatch(closeModal())}
+        onClose={() => {
+          dispatch(closeModal());
+          dispatch(setSelectedDate(null));
+        }}
       />
     </div>
   );

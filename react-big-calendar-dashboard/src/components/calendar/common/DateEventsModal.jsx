@@ -26,7 +26,7 @@ const DateEventsModal = ({ isOpen, selectedDate, eventsByDate, onClose }) => {
           {hasData ? (
             <div className="modal-data-wrapper">
               <p className="modal-info">
-                Showing {dataForDate.length} sample metrics for{' '}
+                We found {dataForDate?.length} items for{' '}
                 <strong>{dateKey}</strong>.
               </p>
               <div className="modal-chart-slot">

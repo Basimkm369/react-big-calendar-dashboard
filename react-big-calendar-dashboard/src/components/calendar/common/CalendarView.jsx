@@ -11,7 +11,7 @@ import {
 } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
-import { getDateTotal, parseDateKey } from '../../../utils/helpers';
+import { parseDateKey } from '../../../utils/helpers';
 
 const locales = {
   'en-US': enUS,
@@ -38,14 +38,12 @@ const CalendarView = ({
 
   const events = useMemo(() => {
     const entries = Object.entries(eventsByDate || {});
-    return entries.map(([dateKey, items]) => {
+    return entries.map(([dateKey]) => {
       const parsed = parseDateKey(dateKey);
       const start = startOfDay(parsed);
       const end = addDays(start, 1);
-      const total = getDateTotal(items);
-
       return {
-        title: `${total} data points`,
+        title: 'Data',
         start,
         end,
         allDay: true,
