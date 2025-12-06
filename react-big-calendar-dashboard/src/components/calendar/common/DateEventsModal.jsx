@@ -22,14 +22,15 @@ const DateEventsModal = ({ isOpen, selectedDate, eventsByDate, onClose }) => {
           {hasData ? (
             <>
               <p className="modal-info">
-                Showing {dataForDate.length} records for{' '}
+                Showing {dataForDate.length} sample metrics for{' '}
                 <strong>{dateKey}</strong>.
               </p>
               <BarChart data={dataForDate} />
             </>
           ) : (
             <p className="modal-warning">
-              <strong>No data found for the selected date ({dateKey})</strong>
+              <strong>No data found for the selected date.</strong>{' '}
+              <span className="modal-warning-date">{dateKey}</span>
             </p>
           )}
         </div>
