@@ -2,9 +2,6 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import CalendarView from './CalendarView';
 
 // Mock react-big-calendar so we can assert props and callbacks without DOM complexity.
-const mockOnSelectSlot = jest.fn();
-const mockOnSelectEvent = jest.fn();
-
 jest.mock('react-big-calendar', () => {
   const Actual = jest.requireActual('react-big-calendar');
   return {

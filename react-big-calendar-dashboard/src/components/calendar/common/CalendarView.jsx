@@ -11,6 +11,7 @@ import {
 } from 'date-fns';
 import enUS from 'date-fns/locale/en-US';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { getDateTotal, parseDateKey } from '../../../utils/helpers';
 
 const locales = {
   'en-US': enUS,
@@ -23,21 +24,6 @@ const localizer = dateFnsLocalizer({
   getDay,
   locales,
 });
-
-const parseDateKey = (key) => {
-  // key = "dd-MM-yyyy"
-  const [day, month, year] = key.split('-').map(Number);
-  return new Date(year, month - 1, day);
-};
-
-const getDateTotal = (items) =>
-  (items || []).reduce((sum, item) => {
-    if (item?.value !== undefined) {
-      return sum + Number(item.value || 0);
-    }
-    const firstValue = Object.values(item || {})[0];
-    return sum + Number(firstValue || 0);
-  }, 0);
 
 const CalendarView = ({
   eventsByDate,
