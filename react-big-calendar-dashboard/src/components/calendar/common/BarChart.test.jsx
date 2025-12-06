@@ -13,8 +13,12 @@ jest.mock('recharts', () => ({
   CartesianGrid: () => <div data-testid="grid" />,
   XAxis: () => <div data-testid="x-axis" />,
   YAxis: () => <div data-testid="y-axis" />,
-  Tooltip: () => <div data-testid="tooltip" />,
-  Bar: () => <div data-testid="bar" />,
+  Bar: ({ children }) => <div data-testid="bar">{children}</div>,
+  Cell: () => <div data-testid="cell" />,
+}));
+
+jest.mock('react-tooltip', () => ({
+  Tooltip: ({ children }) => <div data-testid="react-tooltip">{children}</div>,
 }));
 
 describe('BarChart', () => {

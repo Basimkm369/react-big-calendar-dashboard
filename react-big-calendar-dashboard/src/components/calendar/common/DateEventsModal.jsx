@@ -13,20 +13,26 @@ const DateEventsModal = ({ isOpen, selectedDate, eventsByDate, onClose }) => {
       <div className="modal-content">
         <header className="modal-header">
           <h2>Data for {dateKey}</h2>
-          <button onClick={onClose} className="modal-close-btn">
-            X
+          <button
+            onClick={onClose}
+            className="modal-close-btn"
+            aria-label="Close"
+          >
+            <span className="sr-only">Close</span>
           </button>
         </header>
 
         <div className="modal-body">
           {hasData ? (
-            <>
+            <div className="modal-data-wrapper">
               <p className="modal-info">
                 Showing {dataForDate.length} sample metrics for{' '}
                 <strong>{dateKey}</strong>.
               </p>
-              <BarChart data={dataForDate} />
-            </>
+              <div className="modal-chart-slot">
+                <BarChart data={dataForDate} />
+              </div>
+            </div>
           ) : (
             <p className="modal-warning">
               <strong>No data found for the selected date.</strong>{' '}

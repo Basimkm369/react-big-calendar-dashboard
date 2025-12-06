@@ -5,9 +5,10 @@ import {
   ResponsiveContainer,
   XAxis,
   YAxis,
-  Tooltip,
   Bar,
+  Cell,
 } from 'recharts';
+import { Tooltip as ReactTooltip } from 'react-tooltip';
 
 const normalizeChartData = (data) => {
   if (!data) return [];
@@ -53,11 +54,43 @@ const BarChart = ({ data }) => {
               textAnchor="end"
             />
             <YAxis allowDecimals={false} width={34} tick={{ fontSize: 12 }} />
-            <Tooltip cursor={{ fill: 'rgba(25, 118, 210, 0.08)' }} />
-            <Bar dataKey="value" fill="#1976d2" radius={[4, 4, 0, 0]} />
+            <Bar
+              dataKey="value"
+              fill="#6d4bff"
+              stroke="#5a3bff"
+              radius={[6, 6, 0, 0]}
+              barSize={32}
+            >
+              {chartData.map((entry) => (
+                <Cell
+                  key={entry.label}
+                  data-tooltip-id="bar-tooltip"
+                  data-label={entry.label}
+                  data-value={entry.value}
+                />
+              ))}
+            </Bar>
           </RechartsBarChart>
         </ResponsiveContainer>
       </div>
+      <ReactTooltip
+        id="bar-tooltip"
+        place="top"
+        variant="light"
+        className="bar-tooltip"
+        render={({ activeAnchor }) => {
+          if (!activeAnchor?.getAttribute) return null;
+          const label = activeAnchor.getAttribute('data-label');
+          const value = activeAnchor.getAttribute('data-value');
+          if (!label) return null;
+          return (
+            <div className="bar-tooltip-content">
+              <div className="bar-tooltip-label">{label}</div>
+              <div className="bar-tooltip-value">Value: {value}</div>
+            </div>
+          );
+        }}
+      />
     </div>
   );
 };
