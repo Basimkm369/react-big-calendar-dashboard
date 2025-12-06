@@ -1,0 +1,104 @@
+import { useMemo } from 'react';
+import { Calendar as BigCalendar, dateFnsLocalizer } from 'react-big-calendar';
+import {
+  addDays,
+  format,
+  getDay,
+  isSameDay,
+  parse,
+  startOfDay,
+  startOfWeek,
+} from 'date-fns';
+import enUS from 'date-fns/locale/en-US';
+import 'react-big-calendar/lib/css/react-big-calendar.css';
+
+const locales = {
+  'en-US': enUS,
+};
+
+const localizer = dateFnsLocalizer({
+  format,
+  parse,
+  startOfWeek: () => startOfWeek(new Date(), { weekStartsOn: 1 }),
+  getDay,
+  locales,
+});
+
+const parseDateKey = (key) => {
+  // key = "dd-MM-yyyy"
+  const [day, month, year] = key.split('-').map(Number);
+  return new Date(year, month - 1, day);
+};
+
+const getDateTotal = (items) =>
+  (items || []).reduce((sum, item) => {
+    if (item?.value !== undefined) {
+      return sum + Number(item.value || 0);
+    }
+    const firstValue = Object.values(item || {})[0];
+    return sum + Number(firstValue || 0);
+  }, 0);
+
+const CalendarView = ({ eventsByDate, selectedDate, onDateSelect }) => {
+  const normalizedSelectedDate = selectedDate ? startOfDay(selectedDate) : null;
+
+  const events = useMemo(() => {
+    const entries = Object.entries(eventsByDate || {});
+    return entries.map(([dateKey, items]) => {
+      const parsed = parseDateKey(dateKey);
+      const start = startOfDay(parsed);
+      const end = addDays(start, 1);
+      const total = getDateTotal(items);
+
+      return {
+        title: `${total} data points`,
+        start,
+        end,
+        allDay: true,
+        dateKey,
+      };
+    });
+  }, [eventsByDate]);
+
+  const handleSelectSlot = ({ start }) => {
+    onDateSelect(startOfDay(start));
+  };
+
+  const handleSelectEvent = (event) => {
+    onDateSelect(startOfDay(event.start));
+  };
+
+  const dayPropGetter = (date) => {
+    const dateKey = format(date, 'dd-MM-yyyy');
+    const hasData = !!eventsByDate?.[dateKey];
+    const isSelected =
+      normalizedSelectedDate && isSameDay(normalizedSelectedDate, date);
+
+    let className = '';
+    if (hasData) className += ' rbc-day-has-data';
+    if (isSelected) className += ' rbc-day-selected';
+
+    return { className };
+  };
+
+  return (
+    <div className="calendar-view-wrapper">
+      <BigCalendar
+        localizer={localizer}
+        events={events}
+        startAccessor="start"
+        endAccessor="end"
+        selectable
+        onSelectSlot={handleSelectSlot}
+        onSelectEvent={handleSelectEvent}
+        dayPropGetter={dayPropGetter}
+        eventPropGetter={() => ({ className: 'calendar-event' })}
+        views={['month', 'week', 'day']}
+        defaultView="month"
+        style={{ height: 500 }}
+      />
+    </div>
+  );
+};
+
+export default CalendarView;

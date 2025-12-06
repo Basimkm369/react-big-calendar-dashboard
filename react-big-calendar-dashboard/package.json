@@ -1,7 +1,8 @@
 {
-  "name": "react-big-calendar-dashboard",
+  "name": "calendar-insights-dashboard",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Calendar Insights Dashboard: React Big Calendar with date highlights, modal details, and charts.",
   "type": "module",
   "scripts": {
     "dev": "vite",
